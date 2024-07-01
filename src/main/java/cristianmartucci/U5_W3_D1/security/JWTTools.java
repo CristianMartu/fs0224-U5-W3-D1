@@ -2,6 +2,7 @@ package cristianmartucci.U5_W3_D1.security;
 
 
 import cristianmartucci.U5_W3_D1.entities.Employee;
+import cristianmartucci.U5_W3_D1.exceptions.UnauthorizedException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,5 +22,13 @@ public class JWTTools {
                 .subject(String.valueOf(employee.getEmployeeId()))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
+    }
+
+    public void verifyToken(String token){
+        try {
+            Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secret.getBytes())).build().parse(token);
+        }catch (Exception error){
+            throw new UnauthorizedException("Problemi col token! Per favore effettua di nuovo il login!");
+        }
     }
 }
