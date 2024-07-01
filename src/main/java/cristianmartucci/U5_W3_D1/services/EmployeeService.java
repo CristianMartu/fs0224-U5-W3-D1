@@ -3,6 +3,7 @@ package cristianmartucci.U5_W3_D1.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import cristianmartucci.U5_W3_D1.entities.Employee;
+import cristianmartucci.U5_W3_D1.exceptions.BadRequestException;
 import cristianmartucci.U5_W3_D1.exceptions.NotFoundException;
 import cristianmartucci.U5_W3_D1.payloads.employees.EmployeeDTO;
 import cristianmartucci.U5_W3_D1.repositories.EmployeeRepository;
@@ -25,9 +26,13 @@ public class EmployeeService {
     private Cloudinary cloudinary;
 
     public Employee saveEmployee(EmployeeDTO employeeDTO){
-        Employee employee = new Employee(employeeDTO.username(), employeeDTO.name(), employeeDTO.surname(), employeeDTO.email(), employeeDTO.password());
-        employee.setAvatar("https://ui-avatars.com/api/?name=" + employee.getName() + "+" +employee.getSurname());
-        return this.employeeRepository.save(employee);
+        if(employeeRepository.findByEmail(employeeDTO.email()).isEmpty()){
+            Employee employee = new Employee(employeeDTO.username(), employeeDTO.name(), employeeDTO.surname(), employeeDTO.email(), employeeDTO.password());
+            employee.setAvatar("https://ui-avatars.com/api/?name=" + employee.getName() + "+" +employee.getSurname());
+            return this.employeeRepository.save(employee);
+        }else {
+            throw new BadRequestException("Email già in uso!");
+        }
     }
 
     public Page<Employee> getAllEmployee(int pageNumber, int pageSize, String sortBy){
