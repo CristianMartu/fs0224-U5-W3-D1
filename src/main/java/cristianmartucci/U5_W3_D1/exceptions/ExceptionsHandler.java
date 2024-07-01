@@ -27,6 +27,12 @@ public class ExceptionsHandler {
 		}
 	}
 
+	@ExceptionHandler(UnauthorizedException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public ErrorsDTO handleUnauthorized(NotFoundException error){
+		return new ErrorsDTO(error.getMessage(), LocalDateTime.now());
+	}
+
 	@ExceptionHandler(NotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ErrorsDTO handleNotFound(NotFoundException error){

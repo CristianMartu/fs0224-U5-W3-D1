@@ -1,6 +1,7 @@
 package cristianmartucci.U5_W3_D1.services;
 
 import cristianmartucci.U5_W3_D1.entities.Employee;
+import cristianmartucci.U5_W3_D1.exceptions.UnauthorizedException;
 import cristianmartucci.U5_W3_D1.payloads.employees.EmployeeDTO;
 import cristianmartucci.U5_W3_D1.payloads.logins.EmployeeLoginDTO;
 import cristianmartucci.U5_W3_D1.security.JWTTools;
@@ -17,6 +18,10 @@ public class AuthService {
 
     public String authGenerateToken(EmployeeLoginDTO employeeLoginDTO){
         Employee employee = this.employeeService.findByEmail(employeeLoginDTO.email());
-
+        if (employee.getPassword().equals(employeeLoginDTO.password())){
+            return jwtTools.createToken(employee);
+        }else{
+            throw new UnauthorizedException("Credenziali non corrette!");
+        }
     }
 }

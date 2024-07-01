@@ -25,7 +25,7 @@ public class EmployeeService {
     private Cloudinary cloudinary;
 
     public Employee saveEmployee(EmployeeDTO employeeDTO){
-        Employee employee = new Employee(employeeDTO.username(), employeeDTO.name(), employeeDTO.surname(), employeeDTO.email());
+        Employee employee = new Employee(employeeDTO.username(), employeeDTO.name(), employeeDTO.surname(), employeeDTO.email(), employeeDTO.password());
         employee.setAvatar("https://ui-avatars.com/api/?name=" + employee.getName() + "+" +employee.getSurname());
         return this.employeeRepository.save(employee);
     }

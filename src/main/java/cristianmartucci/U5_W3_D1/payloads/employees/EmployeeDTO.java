@@ -14,5 +14,7 @@ public record EmployeeDTO(@NotEmpty(message = "Username obbligatorio")
                           String surname,
                           @NotEmpty(message = "Email obbligatoria")
                           @Email(message = "Email non valida")
-                          String email) {
+                          String email,
+                          @NotEmpty(message = "Password obbligatoria")
+                          String password) {
 }
